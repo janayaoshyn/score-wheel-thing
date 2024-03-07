@@ -1,0 +1,287 @@
+:root {
+
+  --palette-0: #5429E0;
+  --palette-1: #950D09;
+  --palette-2: #1E37DC;
+  --palette-3: #89138B;
+  --palette-4: #0A5771;
+  --palette-5: #a1a1a1;
+
+  --color-amber-50: #FFF8E1;
+  --color-blue-200: #90CAF9;
+  --color-blue-900: #0D47A1;
+  --color-blue-A700: #2962FF;
+  --color-cyan-500: #00BCD4;
+  --color-gray-100: #F5F5F5;
+  --color-gray-200: #E0E0E0;
+  --color-gray-400: #BDBDBD;
+  --color-gray-50: #FAFAFA;
+  --color-gray-500: #9E9E9E;
+  --color-gray-600: #757575;
+  --color-gray-700: #616161;
+  --color-gray-800: #424242;
+  --color-gray-900: #212121;
+  --color-gray: #000000;
+  --color-green-700: #018642;
+  --color-green: #008F43;
+  --color-orange-700: #D04900;
+  --color-orange: #FFA400;
+  --color-red-700: #EB0F00;
+  --color-red: #E04242;
+  --color-teal-600: #00897B;
+  --color-white: #FFFFFF;
+  --color-average-secondary: var(--color-orange-700);
+  --color-average: var(--color-orange);
+  --color-fail-secondary: var(--color-red-700);
+  --color-fail: var(--color-red);
+  --color-informative: var(--color-blue-900);
+  --color-pass-secondary: var(--color-green-700);
+  --color-pass: var(--color-green);
+  --color-hover: var(--color-gray-50);
+  --header-line-height: 24px;
+  --highlighter-background-color: var(--report-text-color);
+  --icon-square-size: calc(var(--score-icon-size) * 0.88);
+  --image-preview-size: 48px;
+  --metric-toggle-lines-fill: #7F7F7F;
+  --metrics-toggle-background-color: var(--color-gray-200);
+  --plugin-badge-background-color: var(--color-white);
+  --plugin-badge-size-big: calc(var(--gauge-circle-size-big) / 2.7);
+  --plugin-badge-size: calc(var(--gauge-circle-size) / 2.7);
+  --plugin-icon-size: 65%;
+  --pwa-icon-margin: 0 6px 0 -2px;
+  --pwa-icon-size: var(--topbar-logo-size);
+  --report-background-color: #fff;
+  --report-border-color-secondary: #ebebeb;
+  --report-font-family-monospace: 'Roboto Mono', 'Menlo', 'dejavu sans mono', 'Consolas', 'Lucida Console', monospace;
+  --report-font-family: Roboto, Helvetica, Arial, sans-serif;
+  --snippet-background-color: var(--color-gray-50);
+  --snippet-color: var(--color-gray-800);
+  --sparkline-height: 5px;
+  --stackpack-padding-horizontal: 10px;
+  --sticky-header-background-color: var(--report-background-color);
+  --table-higlight-background-color: hsla(0, 0%, 75%, 0.1);
+  --tools-icon-color: var(--color-gray-600);
+  --tools-icon-size: var(--score-icon-background-size);
+  --topbar-background-color: var(--color-gray-100);
+
+}
+
+circle {
+  stroke: currentcolor;
+  r: var(--radius);
+}
+
+text {
+  font-size: 5px;
+  font-weight: 600;
+  font-family: "Sora";
+}
+
+
+.lh-gauge {
+  width: 300px;
+  stroke-width: var(--stroke-width);
+  stroke-linecap: round;
+}
+
+.lh-gauge--faded {
+  opacity: 0.1;
+}
+
+.lh-gauge__wrapper {
+  font-family: var(--report-font-family-monospace);
+  text-decoration: none;
+  transition: .3s;
+  cursor: default;
+}
+
+.lh-gauge__wrapper--fail {
+  color: var(--color-fail);
+}
+
+.state--expanded {
+  transition: color .3s;
+}
+
+.lh-gauge__inner {
+  color: inherit;
+}
+
+.lh-gauge__base {
+  fill: currentcolor;
+}
+
+
+.lh-gauge__arc {
+  fill: none;
+  transition: opacity .3s;
+}
+
+.lh-gauge__arc--metric {
+  color: var(--metric-color);
+  stroke-dashoffset: var(--metric-offset);
+}
+
+.lh-gauge-hover {
+  color: currentcolor;
+  opacity: 0.001;
+  stroke-linecap: butt;
+  stroke-width: 24;
+  transform: scale(1.15);
+  cursor: help;
+}
+
+.lh-gauge__arc--metric.lh-gauge--miniarc {
+  opacity: 0;
+  stroke-dasharray: 0 calc(var(--circle-meas) * var(--radius));
+  transition: 0s .005s;
+}
+
+.state--expanded .lh-gauge__arc--metric.lh-gauge--miniarc {
+  opacity: .999;
+  stroke-dasharray: var(--metric-array);
+  transition: 0.3s;
+}
+
+.state--expanded .lh-gauge__base {
+  fill: #FAFAFA;
+  stroke: transparent;
+}
+
+.state--expanded .lh-gauge__inner .lh-gauge__arc {
+  opacity: 0;
+}
+
+.lh-gauge__percentage {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: currentcolor;
+  opacity: .999;
+  font-size: calc(var(--radius) * 0.625);
+  transition: opacity .3s ease-in;
+}
+
+.cover {
+  fill: none;
+  opacity: .001;
+  pointer-events: none;
+}
+
+.state--expanded .cover {
+  pointer-events: auto;
+}
+
+.metric {
+  transform: scale(var(--scale-initial));
+  opacity: 0;
+  transition: transform .1s .2s ease-out, opacity .3s ease-out;
+  pointer-events: none;
+}
+
+.metric text {
+  pointer-events: none;
+}
+
+.metric__value {
+  fill: var(--metric-color);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.state--highlight .metric {
+  opacity: .3;
+}
+
+.state--highlight .metric--highlight {
+  opacity: .999;
+  stroke-width: calc(1.5*var(--stroke-width));
+}
+
+.state--highlight .metric--highlight .metric__value {
+  opacity: 0.999;
+}
+
+.state--highlight .lh-gauge__percentage {
+  opacity: .3;
+}
+
+.state--highlight {
+  /* color: var(--color-highlight); */
+}
+
+.lh-gauge__svg-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.lh-gauge__cutout {
+  opacity: .999;
+  transition: opacity .3s;
+}
+
+.state--highlight .lh-gauge__cutout {
+  opacity: 0;
+}
+
+.state--expanded .metric {
+  transform: scale(1);
+  opacity: .999;
+  transition: transform .3s ease-out, opacity .3s ease-in, stroke-width .1s ease-out;
+  transition-delay: calc(var(--i)*.05s);
+  pointer-events: auto;
+}
+
+.lh-gauge__bg {
+  fill: var(--report-background-color);
+  stroke: var(--report-background-color);
+}
+
+.lh-metric--average .lh-metric__display-text {
+  color: var(--color-average-secondary);
+}
+
+.lh-metric--average .lh-metric__score-icon {
+  background: var(--color-average);
+  width: var(--icon-square-size);
+  height: var(--icon-square-size);
+}
+
+.lh-gauge__wrapper--average {
+  color: var(--color-average);
+}
+
+.lh-gauge__wrapper--pass {
+  color: var(--color-pass);
+}
+
+.metric {
+  transform: scale(var(--scale-initial));
+  opacity: 0;
+  transition: transform .1s .2s ease-out, opacity .3s ease-out;
+  pointer-events: none;
+}
+
+.metric text {
+  pointer-events: none;
+}
+
+.state--expanded .metric {
+  transform: scale(1);
+  opacity: .999;
+  transition: transform .3s ease-out, opacity .3s ease-in, stroke-width .1s ease-out;
+  transition-delay: calc(var(--i)*.05s);
+  pointer-events: auto;
+}
+
+.state--highlight .metric {
+  opacity: .3;
+}
+
+.state--highlight .metric--highlight {
+  opacity: .999;
+  stroke-width: calc(1.5*var(--stroke-width));
+}
+
+.state--highlight .metric--highlight .metric__value {
+  opacity: 0.999;
+}
