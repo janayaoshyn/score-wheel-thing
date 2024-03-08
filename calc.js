@@ -269,6 +269,9 @@ function _setPerfGaugeExplodey(wrapper, category) {
 
     const needsDomPopulation = !groupOuter.querySelector(`.metric--${alias}`);
 
+    const halfLine = document.createElementNS(NS_URI, "line")
+    const lastLine = document.createElementNS(NS_URI, "line")
+
     const metricGroup = groupOuter.querySelector(`.metric--${alias}`) || document.createElementNS(NS_URI, 'g');
     const metricArcMax = groupOuter.querySelector(`.metric--${alias} .lh-gauge--faded`) || document.createElementNS(NS_URI, 'circle');
     const metricArc = groupOuter.querySelector(`.metric--${alias} .lh-gauge--miniarc`) || document.createElementNS(NS_URI, 'circle');
@@ -331,10 +334,31 @@ function _setPerfGaugeExplodey(wrapper, category) {
         break;
     }
 
+    const halfArcValue = metricLengthMax / 2
+
+    if (metricLength + 5 < halfArcValue)
+      halfLine.classList.add("faded")
+    if (metricLength + 3 < metricLengthMax * 0.9)
+      lastLine.classList.add("faded")
+
     metricLabel.setAttribute('x', (radiusTextOuter * cos).toFixed(2));
     metricLabel.setAttribute('y', (radiusTextOuter * sin).toFixed(2));
-    metricValue.setAttribute('x', (radiusTextInner * cos).toFixed(2));
-    metricValue.setAttribute('y', (radiusTextInner * sin).toFixed(2));
+    metricValue.setAttribute('x', (radiusTextInner * cos + (cos * -3)).toFixed(2));
+    metricValue.setAttribute('y', (radiusTextInner * sin + (sin * -3)).toFixed(2));
+
+    halfLine.setAttribute('x1', (radiusTextInner * cos).toFixed(2));
+    halfLine.setAttribute('y1', (radiusTextInner * sin).toFixed(2));
+    halfLine.setAttribute('x2', (radiusTextInner * cos) + cos * 2.3);
+    halfLine.setAttribute('y2', (radiusTextInner * sin) + sin * 2.3);
+
+    const lastAngle = angleAdder + weightingPct * 1.7 * Math.PI;
+    const secondCos = Math.cos(lastAngle);
+    const secondSin = Math.sin(lastAngle);
+
+    lastLine.setAttribute('x1', (radiusTextInner * secondCos).toFixed(2));
+    lastLine.setAttribute('y1', (radiusTextInner * secondSin).toFixed(2));
+    lastLine.setAttribute('x2', (radiusTextInner * secondCos + secondCos * 2.3));
+    lastLine.setAttribute('y2', (radiusTextInner * secondSin + secondSin * 2.3));
 
     if (needsDomPopulation) {
       metricGroup.appendChild(metricArcMax);
@@ -343,6 +367,8 @@ function _setPerfGaugeExplodey(wrapper, category) {
       metricGroup.appendChild(metricLabel);
       metricGroup.appendChild(metricValue);
       groupOuter.appendChild(metricGroup);
+      metricGroup.appendChild(halfLine);
+      metricGroup.appendChild(lastLine);
     }
 
     offsetAdder -= metricOffset;
@@ -527,14 +553,15 @@ class App extends m {
 function main() {
   const versions = ["10"]
   const metricValues = {
-    CLS: 0.01,
-    FCI: 500,
-    FCP: 10,
-    FMP: 10,
-    LCP: 10,
-    SI: 5000,
-    TBT: 10,
-    TTI: 10,
+    CLS: 0.21,
+    FCP: 1500,
+    TBT: 168,
+    LCP: 2000,
+    SI: 2000,
+
+    FCI: 5000,
+    FMP: 3000,
+    TTI: 5000,
   };
 
   function getQueryParam(name) {
@@ -553,13 +580,11 @@ function main() {
   const queryMetrics = Object.keys(metricValues)
     .map(key => ({ key, value: getQueryParam(key) }))
     .reduce((acc, { key, value }) => {
-      acc[key] = value;
+      acc[key] = value ?? metricValues[key];
       return acc;
     }, {});
 
-
   const device = getQueryParam("device") ?? "desktop"
-
 
   H(h(App, { versions, device, metricValues: queryMetrics, }), $('#container'));
 }

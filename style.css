@@ -86,6 +86,7 @@ text {
 
 .lh-gauge--faded {
   opacity: 0.1;
+  z-index: 1;
 }
 
 .lh-gauge__wrapper {
@@ -129,6 +130,17 @@ text {
   stroke-width: 24;
   transform: scale(1.15);
   cursor: help;
+}
+
+line {
+  stroke: var(--metric-color);
+  stroke-width: 1px;
+  stroke-dashoffset: var(--metric-offset);
+  z-index: 0;
+}
+
+line.faded {
+  opacity: 0.1;
 }
 
 .lh-gauge__arc--metric.lh-gauge--miniarc {
@@ -188,13 +200,21 @@ text {
   transition: opacity 0.2s;
 }
 
+.state--expanded .metric {
+  transform: scale(1);
+  opacity: .999;
+  transition: transform .3s ease-out, opacity .3s ease-in, stroke-width .1s ease-out;
+  transition-delay: calc(var(--i)*.05s);
+  pointer-events: auto;
+}
+
 .state--highlight .metric {
   opacity: .3;
 }
 
 .state--highlight .metric--highlight {
   opacity: .999;
-  stroke-width: calc(1.5*var(--stroke-width));
+  stroke-width: calc(1.4*var(--stroke-width));
 }
 
 .state--highlight .metric--highlight .metric__value {
@@ -203,10 +223,6 @@ text {
 
 .state--highlight .lh-gauge__percentage {
   opacity: .3;
-}
-
-.state--highlight {
-  /* color: var(--color-highlight); */
 }
 
 .lh-gauge__svg-wrapper {
@@ -221,14 +237,6 @@ text {
 
 .state--highlight .lh-gauge__cutout {
   opacity: 0;
-}
-
-.state--expanded .metric {
-  transform: scale(1);
-  opacity: .999;
-  transition: transform .3s ease-out, opacity .3s ease-in, stroke-width .1s ease-out;
-  transition-delay: calc(var(--i)*.05s);
-  pointer-events: auto;
 }
 
 .lh-gauge__bg {
@@ -263,25 +271,4 @@ text {
 
 .metric text {
   pointer-events: none;
-}
-
-.state--expanded .metric {
-  transform: scale(1);
-  opacity: .999;
-  transition: transform .3s ease-out, opacity .3s ease-in, stroke-width .1s ease-out;
-  transition-delay: calc(var(--i)*.05s);
-  pointer-events: auto;
-}
-
-.state--highlight .metric {
-  opacity: .3;
-}
-
-.state--highlight .metric--highlight {
-  opacity: .999;
-  stroke-width: calc(1.5*var(--stroke-width));
-}
-
-.state--highlight .metric--highlight .metric__value {
-  opacity: 0.999;
 }
