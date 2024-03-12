@@ -336,9 +336,9 @@ function _setPerfGaugeExplodey(wrapper, category) {
 
     const halfArcValue = metricLengthMax / 2
 
-    if (metricLength + 5 < halfArcValue)
+    if (metricLength + 3 < halfArcValue)
       halfLine.classList.add("faded")
-    if (metricLength + 3 < metricLengthMax * 0.9)
+    if (metricLength + 0.5 < metricLengthMax * 0.9)
       lastLine.classList.add("faded")
 
     metricLabel.setAttribute('x', (radiusTextOuter * cos).toFixed(2));
@@ -351,7 +351,7 @@ function _setPerfGaugeExplodey(wrapper, category) {
     halfLine.setAttribute('x2', (radiusTextInner * cos) + cos * 2.3);
     halfLine.setAttribute('y2', (radiusTextInner * sin) + sin * 2.3);
 
-    const lastAngle = angleAdder + weightingPct * 1.7 * Math.PI;
+    const lastAngle = angleAdder + weightingPct * 1.752 * Math.PI;
     const secondCos = Math.cos(lastAngle);
     const secondSin = Math.sin(lastAngle);
 
@@ -472,6 +472,7 @@ class ScoringGuide extends m {
     });
 
     const auditRefs = metricsData.map(metric => {
+      console.log(metric.id, metric.score)
       return {
         id: metric.id,
         weight: metric.metricScoring.weight,
